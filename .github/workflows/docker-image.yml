@@ -40,4 +40,4 @@ jobs:
           context: .
           file: ./UserRegistration/Dockerfile
           push: true
-          tags: projectkuchela:latest
+          tags: vasuklk/projectkuchela:latest
