@@ -5,6 +5,6 @@ namespace UserRegistration.Interface
 {
     public interface IRegistration
     {
-        public void UserRegistration(User user);
+        public void UserRegistration(UserModel user);
     }
 }
