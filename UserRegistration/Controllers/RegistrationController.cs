@@ -11,12 +11,17 @@ namespace UserRegistration.Controllers
     public class RegistrationController : ControllerBase
     {
         IRegistration _registration;
+        IDBContext _dbContext;
         ISecurePasswordGenerationAndValidation _securePassword;
         
-        public RegistrationController(IRegistration registration, ISecurePasswordGenerationAndValidation securePassword)
+        public RegistrationController(IRegistration registration, 
+            ISecurePasswordGenerationAndValidation securePassword,
+            IDBContext dBContext
+            )
         {
             _registration = registration;
             _securePassword = securePassword;
+            _dbContext = dBContext;
         }
 
         [HttpPost]
@@ -42,9 +47,12 @@ namespace UserRegistration.Controllers
         {
             try
             {
-                string salt = "pfMfP8krTn6F1zWykI4FiA==";
-                string hash = "SVS7FkJEBTbH6JjLaXuqYsDW2TLunhm2mrI4TdP9IRk=";
-                bool loginSuccess = _securePassword.PasswordValidation(loginModel.Password, hash, salt);
+                //Get Hash and Salt values from DB for specific User
+                _dbContext.GetHashAndSalt(ref loginModel);
+
+                //Validate password by hashing and comparing with DB 
+                bool loginSuccess = _securePassword.PasswordValidation(loginModel.Password, loginModel.HashedPassword, loginModel.Salt);
+                
                 if (loginSuccess)
                     return Ok("Login Successful");
                 else

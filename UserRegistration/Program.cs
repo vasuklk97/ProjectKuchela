@@ -1,4 +1,5 @@
 using UserRegistration.Controllers;
+using UserRegistration.Database;
 using UserRegistration.Interface;
 using UserRegistration.Service;
 using Registration = UserRegistration.Service.Registration;
@@ -14,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRegistration, Registration>();
 builder.Services.AddScoped<ISecurePasswordGenerationAndValidation, SecurePasswordGenerationAndValidation>();
+builder.Services.AddScoped<IDBContext, DBContext>();
 
 var app = builder.Build();
 

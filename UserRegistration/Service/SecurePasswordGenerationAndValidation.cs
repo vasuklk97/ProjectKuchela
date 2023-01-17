@@ -8,6 +8,7 @@ namespace UserRegistration.Service
     {
         public string GenerateSalt()
         {
+            //This section helps to generate a Random Salt
             byte[] salt;
             var rng = RandomNumberGenerator.Create();
             rng.GetBytes(salt = new byte[16]);
@@ -16,6 +17,7 @@ namespace UserRegistration.Service
 
         public byte[] GetHash(string password, string salt)
         {
+            //Generate hash value using password and salt
             byte[] byteArray = Encoding.Unicode.GetBytes(String.Concat(salt,password));
             var sha256 = SHA256.Create();
             byte[] hashedBytes = sha256.ComputeHash(byteArray);
@@ -24,6 +26,7 @@ namespace UserRegistration.Service
 
         public bool PasswordValidation(string password, string hash, string salt)
         {
+            //Create a hashed password and compare with hash stored in DB
             string hashedPassword = Convert.ToBase64String(GetHash(password, salt));
             return hashedPassword.Equals(hash);
         }
